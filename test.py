@@ -1,5 +1,7 @@
 import tkinter as tk                
 from tkinter import font  as tkfont 
+import os
+import csv
 
 
 class SampleApp(tk.Tk):
@@ -87,6 +89,47 @@ class ToDoList(tk.Frame):
         button.pack()
         button1.pack()
         button3.pack()
+    def is_a_file():
+        if os.path.isfile("notes.csv"):
+            return True
+        else:
+            return False
+    def read_note():
+        array = []
+        if is_a_file():
+    
+            with open("notes.csv","r") as csvfile:
+                datareader = csv.reader(csvfile)
+                for row in datareader:
+                    array = array+row
+                    print(row)
+            return array
+        else:
+            with open("notes.csv", "a+", newline='') as f:
+                header = ["Data", "Notatka"]
+                writer = csv.DictWriter(f, fieldnames=header)
+                writer.writeheader()
+            with open("notes.csv","r") as csvfile:
+                datareader = csv.reader(csvfile)
+                for row in datareader:
+                    array = array+row
+                if len(array)==2:
+                    array +=" "
+        return array
+ 
+ 
+def add_note(date, text):
+    header = ["Data", "Notatka"]
+    if is_a_file() is True:
+        with open("notes.csv", "a+", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=header)
+            writer.writerow({"Data": date, "Notatka": text})
+    else:
+        with open("notes.csv", "a+", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=header)
+            writer.writeheader()
+            writer.writerow({"Data": date, "Notatka": text})
+
 
 class Weather(tk.Frame):
 
@@ -106,6 +149,22 @@ class Weather(tk.Frame):
         button2.pack()
 
 
+
+
 if __name__ == "__main__":
     app = SampleApp()
     app.mainloop()
+
+
+root.grid_columnconfigure(0, weight=1)
+root.grid_rowconfigure(0, weight=1)
+
+
+text = tk.Text(root, height=10)
+text.grid(row=0, column=0, sticky='ew')
+
+
+scrollbar = ttk.Scrollbar(root, orient='vertical', command=text.yview)
+scrollbar.grid(row=0, column=1, sticky='ns')
+
+text['yscrollcommand'] = scrollbar.set
