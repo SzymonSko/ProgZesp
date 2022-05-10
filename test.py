@@ -64,7 +64,7 @@ class Calendar(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is calendar page", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+        label.place(relx=0.5, rely=0.05, anchor=CENTER)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button2 = tk.Button(self, text="Go to To Do List",
@@ -82,7 +82,7 @@ class ToDoList(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is To Do page", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+        label.place(relx=0.5, rely=0.05, anchor=CENTER)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button1 = tk.Button(self, text="Go to Calendar",
@@ -140,8 +140,8 @@ class ToDoList(tk.Frame):
         buttonRead = tk.Button(self, text="Read Note ",
                             command=read_note)                           
 
-        buttonAdd.pack()   
-        buttonRead.pack()            
+        buttonAdd.place(relx=0.45, rely=0.6, anchor=CENTER)  
+        buttonRead.place(relx=0.5, rely=0.6, anchor=CENTER)        
 
 
 
@@ -151,7 +151,7 @@ class Weather(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is Weather page", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+        label.place(relx=0.5, rely=0.05, anchor=CENTER)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button1 = tk.Button(self, text="Go to Calendar",
