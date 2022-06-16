@@ -2,7 +2,10 @@ import tkinter as tk
 from tkinter import CENTER, TOP, font  as tkfont 
 import os
 import csv
-
+import urllib, json
+import requests
+from pandas.io.json import json_normalize
+from tkinter import filedialog
 
 class SampleApp(tk.Tk):
 
@@ -18,7 +21,7 @@ class SampleApp(tk.Tk):
         
 
         self.frames = {}
-        for F in (StartPage, Calendar, ToDoList, Weather):
+        for F in (StartPage, Calculator, ToDoList, Weather):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -51,20 +54,26 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame("ToDoList"))
         button2 = tk.Button(self, text="Go to Weather Page ",
                            command=lambda: controller.show_frame("Weather"))
-        button3 = tk.Button(self, text="Go to Calendar",
-                            command=lambda: controller.show_frame("Calendar"))
+        button3 = tk.Button(self, text="Go to Calculator",
+                            command=lambda: controller.show_frame("Calculator"))
         button1.place(relx=0.45, rely=0.1, anchor=CENTER)
         button2.place(relx=0.5, rely=0.1, anchor=CENTER)
         button3.place(relx=0.55, rely=0.1, anchor=CENTER)
 
 
-class Calendar(tk.Frame):
+class Calculator(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="This is calendar page", font=controller.title_font)
+        label = tk.Label(self, text="This is calculator page", font=controller.title_font)
         label.place(relx=0.5, rely=0.05, anchor=CENTER)
+        def open_calculator():
+            os.system('E:\Programowanie\Zespolowe\dist\Calculator.exe')
+        
+           
+        button4 = tk.Button(self, text ='Open caluclator',
+                            command = open_calculator)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
         button2 = tk.Button(self, text="Go to To Do List",
@@ -74,6 +83,7 @@ class Calendar(tk.Frame):
         button.place(relx=0.45, rely=0.1, anchor=CENTER)
         button2.place(relx=0.5, rely=0.1, anchor=CENTER)
         button3.place(relx=0.55, rely=0.1, anchor=CENTER)
+        button4.place(relx=0.5, rely=0.2, anchor=CENTER)
 
 
 class ToDoList(tk.Frame):
@@ -85,8 +95,8 @@ class ToDoList(tk.Frame):
         label.place(relx=0.5, rely=0.05, anchor=CENTER)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
-        button1 = tk.Button(self, text="Go to Calendar",
-                            command=lambda: controller.show_frame("Calendar"))
+        button1 = tk.Button(self, text="Go to Calculator",
+                            command=lambda: controller.show_frame("Calculator"))
         button3 = tk.Button(self, text="Go to Weather Page ",
                             command=lambda: controller.show_frame("Weather"))
                       
@@ -148,14 +158,24 @@ class ToDoList(tk.Frame):
 class Weather(tk.Frame):
 
     def __init__(self, parent, controller):
+        url = "https://dor-error-1234.herokuapp.com/weather/Katowice?fbclid=IwAR2Rm6w1OOh6a7_ULdHhHjpbpZzYKnDiBZAwUQiB4njM-4a94JvBu4CcjFw"
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+        reg = json_normalize(data)
+        reg = reg.to_string(index=False)
+
         tk.Frame.__init__(self, parent)
+
+        final = tk.Label(self, text=reg, font=controller.title_font)
+        final.place(relx=0.5, rely=0.2, anchor=CENTER)
         self.controller = controller
-        label = tk.Label(self, text="This is Weather page", font=controller.title_font)
+        label = tk.Label(self, text="Weather in Katowice", font=controller.title_font)
+
         label.place(relx=0.5, rely=0.05, anchor=CENTER)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("StartPage"))
-        button1 = tk.Button(self, text="Go to Calendar",
-                            command=lambda: controller.show_frame("Calendar"))
+        button1 = tk.Button(self, text="Go to Calculator",
+                            command=lambda: controller.show_frame("Calculator"))
         button2 = tk.Button(self, text="Go to To Do List",
                             command=lambda: controller.show_frame("ToDoList"))
         button.place(relx=0.45, rely=0.1, anchor=CENTER)
@@ -167,5 +187,4 @@ class Weather(tk.Frame):
 if __name__ == "__main__":
     app = SampleApp()
     app.mainloop()
-
 
