@@ -1,8 +1,6 @@
 import tkinter as tk           
-from tkinter import ANCHOR, CENTER, RIGHT, LEFT, BOTH, END, Entry, Listbox, font as tkfont
+from tkinter import ANCHOR, CENTER, RIGHT, LEFT, BOTH, END, Entry, Listbox, Scrollbar, font as tkfont
 import os
-
-from tkinter.ttk import Scrollbar
 import urllib, json
 from click import command
 from numpy import pad
